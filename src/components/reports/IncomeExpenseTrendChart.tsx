@@ -4,7 +4,7 @@
 import * as React from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { format }s "date-fns";
+import { format } from "date-fns";
 
 interface MonthlyData {
   month: string; // YYYY-MM
@@ -115,3 +115,4 @@ export default function IncomeExpenseTrendChart({ data }: IncomeExpenseTrendChar
     </Card>
   );
 }
+
