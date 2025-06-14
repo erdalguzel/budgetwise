@@ -72,13 +72,15 @@ type SortConfig = {
   direction: "ascending" | "descending";
 };
 
+const ALL_CATEGORIES_VALUE = "_all_categories_";
+
 export default function TransactionsPage() {
   const { toast } = useToast();
   const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [categoryFilter, setCategoryFilter] = useState<string>(ALL_CATEGORIES_VALUE);
   const [typeFilter, setTypeFilter] = useState<string>("");
   const [startDateFilter, setStartDateFilter] = useState<Date | null>(null);
   const [endDateFilter, setEndDateFilter] = useState<Date | null>(null);
@@ -122,7 +124,7 @@ export default function TransactionsPage() {
         t.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    if (categoryFilter) {
+    if (categoryFilter && categoryFilter !== ALL_CATEGORIES_VALUE) {
       transactions = transactions.filter((t) => t.category === categoryFilter);
     }
     if (typeFilter) {
@@ -215,7 +217,7 @@ export default function TransactionsPage() {
   
   const clearFilters = () => {
     setSearchTerm("");
-    setCategoryFilter("");
+    setCategoryFilter(ALL_CATEGORIES_VALUE);
     setTypeFilter("");
     setStartDateFilter(null);
     setEndDateFilter(null);
@@ -262,7 +264,7 @@ export default function TransactionsPage() {
                 <SelectValue placeholder="Filter by category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value={ALL_CATEGORIES_VALUE}>All Categories</SelectItem>
                 {allTransactionCategories.map((cat) => (
                   <SelectItem key={cat} value={cat}>
                     {cat}
