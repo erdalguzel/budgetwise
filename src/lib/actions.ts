@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -11,30 +12,36 @@ import { revalidatePath } from "next/cache";
 let transactionsStore: Transaction[] = [
   { id: '1', date: '2024-07-01', description: 'Salary', amount: 3000, type: 'income', category: 'Salary' },
   { id: '2', date: '2024-07-01', description: 'Rent', amount: 1200, type: 'expense', category: 'Housing' },
+  { id: '3', date: '2024-07-02', description: 'Groceries at SuperMart', amount: 75.50, type: 'expense', category: 'Groceries' },
+  { id: '4', date: '2024-07-03', description: 'Dinner with Friends', amount: 55.00, type: 'expense', category: 'Dining Out' },
+  { id: '5', date: '2024-07-04', description: 'Movie Tickets', amount: 25.00, type: 'expense', category: 'Entertainment' },
 ];
 let budgetGoalsStore: BudgetGoal[] = [
   { id: 'b1', category: 'Groceries', amount: 300 },
   { id: 'b2', category: 'Housing', amount: 1200 },
 ];
 
-const addTransactionSchema = z.object({
+const transactionSchema = z.object({
   description: z.string().min(1, "Description is required"),
   amount: z.number().positive("Amount must be positive"),
   type: z.enum(["income", "expense"]),
-  category: z.string().min(1, "Category is required") as z.ZodType<TransactionCategory>, // Cast to TransactionCategory
+  category: z.string().min(1, "Category is required") as z.ZodType<TransactionCategory>,
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
 });
 
 export async function addTransactionAction(formData: FormData) {
   try {
     const data = Object.fromEntries(formData.entries());
-    const parsedData = addTransactionSchema.safeParse({
+    const parsedData = transactionSchema.safeParse({
       ...data,
       amount: parseFloat(data.amount as string),
     });
 
     if (!parsedData.success) {
-      return { success: false, error: parsedData.error.flatten().fieldErrors };
+      // Convert ZodError to a more user-friendly format if needed
+      const errors = parsedData.error.flatten().fieldErrors;
+      const errorMessages = Object.values(errors).flat().join(", ");
+      return { success: false, error: errorMessages || "Invalid input." };
     }
 
     const newTransaction: Transaction = {
@@ -43,14 +50,69 @@ export async function addTransactionAction(formData: FormData) {
     };
 
     transactionsStore.push(newTransaction);
-    revalidatePath("/"); // Revalidate dashboard page
+    revalidatePath("/"); 
     revalidatePath("/transactions");
+    revalidatePath("/budgets"); // Budgets page also uses transactions
     return { success: true, transaction: newTransaction };
   } catch (error) {
     console.error("Error adding transaction:", error);
     return { success: false, error: "An unexpected error occurred." };
   }
 }
+
+export async function editTransactionAction(transactionId: string, formData: FormData) {
+  try {
+    const data = Object.fromEntries(formData.entries());
+    const parsedData = transactionSchema.safeParse({
+      ...data,
+      amount: parseFloat(data.amount as string),
+    });
+
+    if (!parsedData.success) {
+      const errors = parsedData.error.flatten().fieldErrors;
+      const errorMessages = Object.values(errors).flat().join(", ");
+      return { success: false, error: errorMessages || "Invalid input." };
+    }
+
+    const transactionIndex = transactionsStore.findIndex(t => t.id === transactionId);
+    if (transactionIndex === -1) {
+      return { success: false, error: "Transaction not found." };
+    }
+
+    transactionsStore[transactionIndex] = {
+      ...transactionsStore[transactionIndex],
+      ...parsedData.data,
+    };
+    
+    revalidatePath("/");
+    revalidatePath("/transactions");
+    revalidatePath("/budgets");
+    return { success: true, transaction: transactionsStore[transactionIndex] };
+  } catch (error) {
+    console.error("Error editing transaction:", error);
+    return { success: false, error: "An unexpected error occurred." };
+  }
+}
+
+export async function deleteTransactionAction(transactionId: string) {
+  try {
+    const initialLength = transactionsStore.length;
+    transactionsStore = transactionsStore.filter(t => t.id !== transactionId);
+
+    if (transactionsStore.length === initialLength) {
+      return { success: false, error: "Transaction not found or already deleted." };
+    }
+    
+    revalidatePath("/");
+    revalidatePath("/transactions");
+    revalidatePath("/budgets");
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+    return { success: false, error: "An unexpected error occurred." };
+  }
+}
+
 
 export async function getTransactionsAction(): Promise<Transaction[]> {
   // Simulate API delay
