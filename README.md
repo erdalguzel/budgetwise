@@ -1,5 +1,19 @@
-# Firebase Studio
+This is a simple Budget Tracker app which allows you to (well you probably guessed it right) track your expenses and income resources (salary, investment etc.). This app allows you to see which category (housing, entertainment, utilities etc.) allocates how much of your expenses and shows a financial report accordingly and tracks your expenses. You can filter your expenses by category or by start date and end date. 
 
-This is a NextJS starter in Firebase Studio.
+This app is written in Typescript, NextJS and Tailwind CSS.
 
-To get started, take a look at src/app/page.tsx.
+Dashboard page
+
+![image](https://github.com/user-attachments/assets/a0e22b5f-42da-4f11-82ad-16533c397d0f)
+
+Transactions page
+
+![image](https://github.com/user-attachments/assets/26180316-4587-4fd9-8b31-a109ea034809)
+
+Budgets page
+
+![image](https://github.com/user-attachments/assets/1a69b638-363b-46a0-9ec6-6fdfb70f627e)
+
+Reports page
+
+![image](https://github.com/user-attachments/assets/864e3777-b016-4b6f-b547-fce601c40af7)
