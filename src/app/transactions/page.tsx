@@ -73,6 +73,7 @@ type SortConfig = {
 };
 
 const ALL_CATEGORIES_VALUE = "_all_categories_";
+const ALL_TYPES_VALUE = "_all_types_";
 
 export default function TransactionsPage() {
   const { toast } = useToast();
@@ -81,7 +82,7 @@ export default function TransactionsPage() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>(ALL_CATEGORIES_VALUE);
-  const [typeFilter, setTypeFilter] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<string>(ALL_TYPES_VALUE);
   const [startDateFilter, setStartDateFilter] = useState<Date | null>(null);
   const [endDateFilter, setEndDateFilter] = useState<Date | null>(null);
 
@@ -127,7 +128,7 @@ export default function TransactionsPage() {
     if (categoryFilter && categoryFilter !== ALL_CATEGORIES_VALUE) {
       transactions = transactions.filter((t) => t.category === categoryFilter);
     }
-    if (typeFilter) {
+    if (typeFilter && typeFilter !== ALL_TYPES_VALUE) {
       transactions = transactions.filter((t) => t.type === typeFilter);
     }
     if (startDateFilter) {
@@ -218,7 +219,7 @@ export default function TransactionsPage() {
   const clearFilters = () => {
     setSearchTerm("");
     setCategoryFilter(ALL_CATEGORIES_VALUE);
-    setTypeFilter("");
+    setTypeFilter(ALL_TYPES_VALUE);
     setStartDateFilter(null);
     setEndDateFilter(null);
   };
@@ -278,7 +279,7 @@ export default function TransactionsPage() {
                 <SelectValue placeholder="Filter by type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value={ALL_TYPES_VALUE}>All Types</SelectItem>
                 <SelectItem value="income">Income</SelectItem>
                 <SelectItem value="expense">Expense</SelectItem>
               </SelectContent>
