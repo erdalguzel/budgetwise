@@ -64,8 +64,6 @@ const SidebarProvider = React.forwardRef<
       className,
       style,
       children,
-      // Destructure asChild to prevent it from being spread to the div
-      asChild,
       ...consumerProps
     },
     ref
@@ -174,8 +172,6 @@ const Sidebar = React.forwardRef<
       collapsible = "offcanvas",
       className,
       children,
-      // Destructure asChild to prevent it from being spread
-      asChild,
       ...consumerProps
     },
     ref
@@ -323,7 +319,7 @@ SidebarRail.displayName = "SidebarRail"
 const SidebarInset = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"main">
->(({ className, asChild, ...consumerProps }, ref) => {
+>(({ className, ...consumerProps }, ref) => {
   return (
     <main
       ref={ref}
@@ -359,7 +355,7 @@ SidebarInput.displayName = "SidebarInput"
 const SidebarHeader = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div">
->(({ className, asChild, ...consumerProps }, ref) => {
+>(({ className, ...consumerProps }, ref) => {
   return (
     <div
       ref={ref}
@@ -374,7 +370,7 @@ SidebarHeader.displayName = "SidebarHeader"
 const SidebarFooter = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div">
->(({ className, asChild, ...consumerProps }, ref) => {
+>(({ className, ...consumerProps }, ref) => {
   return (
     <div
       ref={ref}
@@ -404,7 +400,7 @@ SidebarSeparator.displayName = "SidebarSeparator"
 const SidebarContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div">
->(({ className, asChild, ...consumerProps }, ref) => {
+>(({ className, ...consumerProps }, ref) => {
   return (
     <div
       ref={ref}
@@ -422,7 +418,7 @@ SidebarContent.displayName = "SidebarContent"
 const SidebarGroup = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div">
->(({ className, asChild, ...consumerProps }, ref) => {
+>(({ className, ...consumerProps }, ref) => {
   return (
     <div
       ref={ref}
@@ -481,7 +477,7 @@ SidebarGroupAction.displayName = "SidebarGroupAction"
 const SidebarGroupContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div">
->(({ className, asChild, ...consumerProps }, ref) => (
+>(({ className, children, ...consumerProps }, ref) => (
   <div
     ref={ref}
     data-sidebar="group-content"
@@ -494,7 +490,7 @@ SidebarGroupContent.displayName = "SidebarGroupContent"
 const SidebarMenu = React.forwardRef<
   HTMLUListElement,
   React.ComponentProps<"ul">
->(({ className, asChild, ...consumerProps }, ref) => (
+>(({ className, ...consumerProps }, ref) => (
   <ul
     ref={ref}
     data-sidebar="menu"
@@ -507,7 +503,7 @@ SidebarMenu.displayName = "SidebarMenu"
 const SidebarMenuItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li">
->(({ className, asChild, ...consumerProps }, ref) => (
+>(({ className, ...consumerProps }, ref) => (
   <li
     ref={ref}
     data-sidebar="menu-item"
@@ -632,7 +628,7 @@ SidebarMenuAction.displayName = "SidebarMenuAction"
 const SidebarMenuBadge = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div">
->(({ className, asChild, ...consumerProps }, ref) => (
+>(({ className, ...consumerProps }, ref) => (
   <div
     ref={ref}
     data-sidebar="menu-badge"
@@ -655,7 +651,7 @@ const SidebarMenuSkeleton = React.forwardRef<
   React.ComponentProps<"div"> & {
     showIcon?: boolean
   }
->(({ className, showIcon = false, asChild, ...consumerProps }, ref) => {
+>(({ className, showIcon = false, ...consumerProps }, ref) => {
   // Random width between 50 to 90%.
   const width = React.useMemo(() => {
     return `${Math.floor(Math.random() * 40) + 50}%`
@@ -691,7 +687,7 @@ SidebarMenuSkeleton.displayName = "SidebarMenuSkeleton"
 const SidebarMenuSub = React.forwardRef<
   HTMLUListElement,
   React.ComponentProps<"ul">
->(({ className, asChild, ...consumerProps }, ref) => (
+>(({ className, ...consumerProps }, ref) => (
   <ul
     ref={ref}
     data-sidebar="menu-sub"
@@ -708,7 +704,7 @@ SidebarMenuSub.displayName = "SidebarMenuSub"
 const SidebarMenuSubItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li">
->(({ asChild, ...consumerProps }, ref) => <li ref={ref} {...consumerProps} />)
+>(({ ...consumerProps }, ref) => <li ref={ref} {...consumerProps} />)
 SidebarMenuSubItem.displayName = "SidebarMenuSubItem"
 
 const SidebarMenuSubButton = React.forwardRef<

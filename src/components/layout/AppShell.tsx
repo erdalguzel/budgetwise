@@ -62,7 +62,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             <span className="text-primary group-data-[collapsible=icon]:hidden">BudgetWise</span>
           </Link>
         </SidebarHeader>
-        <SidebarContent asChild>
+        <SidebarContent>
           <ScrollArea className="h-full">
             <SidebarMenu className="p-2">
               {navItems.map((item) => (
