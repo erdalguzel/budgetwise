@@ -2,6 +2,13 @@ This is a simple Budget Tracker app which allows you to (well you probably guess
 
 This app is written in Typescript, NextJS and Tailwind CSS.
 
+When you clone this project to your local machine you need to follow these steps:
+
+1. Go to the root directory of the project
+2. run ```npm install``` to install dependencies
+3. run ```npm run build``` to build the app
+4. Finally run ```npm start``` to start app on your local machine
+
 Dashboard page
 
 ![image](https://github.com/user-attachments/assets/a0e22b5f-42da-4f11-82ad-16533c397d0f)
